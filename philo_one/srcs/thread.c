@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 02:11:09 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 19:27:14 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:26:51 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ bool	create_thread(t_philo_one *info)
 	tid = malloc(sizeof(pthread_t) * info->number_of_philosophers);
 	if (tid == NULL)
 		return (error_exit(ERR_MALLOC));
+	first = get_cur_time();
 	i = -1;
 	while (++i < info->number_of_philosophers)
 	{

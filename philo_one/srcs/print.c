@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:01:46 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 19:56:38 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:29:52 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	print_action(int number, int act, bool status)
 	else if (act == DIED)
 		act_message = "died";
 	// printf("%ld %d %s\n", get_cur_time(), number, act_message);
-	if (printf("%ld %d %s\n", get_cur_time(), number, act_message) < 0)
+	if (printf("%li %d %s\n", get_cur_time() - first, number, act_message) < 0)
 		return (error_exit(ERR_PRINTF));
 	return (EXIT_SUCCESS);
 }

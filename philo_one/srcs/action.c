@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:10:59 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 19:57:32 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:40:34 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,11 @@ void	*sleep_after_eating(t_philosopher *philo)
 		return (NULL);
 	if (usleep(philo->info->time_to_sleep) == -1)
 		return (wrap(error_exit(ERR_USLEEP)));
-	if (print_action(philo->number + 1, SLEEP,
-			philo->info->status) == false)
-		return (NULL);
+	// if (print_action(philo->number + 1, SLEEP,
+	// 		philo->info->status) == false)
+	// 	return (NULL);
 	// philo->last_eat_time++;
-	// print_action(philo->number + 1, SLEEP, philo->info->status);
+	print_action(philo->number + 1, SLEEP, philo->info->status);
 	return ("OK");
 }
 
@@ -127,15 +127,17 @@ void	*take_fork(t_philosopher *phil, int l_or_r)
 	if (print_action(phil->number + 1,
 			TAKE_FORK, phil->info->status) == EXIT_FAILURE)
 		res = NULL;
-	if (res == NULL)
-	{
-		if (l_or_r == RIGHT || l_or_r == LEFT)
-			if (pthread_mutex_unlock(&phil->info->forks[phil->right_fork]) != 0)
-				return (wrap(error_exit(ERR_MUTEX_UNLOCK)));
-		if (l_or_r == LEFT)
-			if (pthread_mutex_unlock(&phil->info->forks[phil->left_fork]) != 0)
-				return (wrap(error_exit(ERR_MUTEX_UNLOCK)));
-		return (NULL);
-	}
-	return ("OK");
+	// if (res == NULL)
+	// {
+	// 	if (l_or_r == RIGHT || l_or_r == LEFT)
+	// 		if (pthread_mutex_unlock(&phil->info->forks[phil->right_fork]) != 0)
+	// 			return (wrap(error_exit(ERR_MUTEX_UNLOCK)));
+	// 	if (l_or_r == LEFT)
+	// 		if (pthread_mutex_unlock(&phil->info->forks[phil->left_fork]) != 0)
+	// 			return (wrap(error_exit(ERR_MUTEX_UNLOCK)));
+	// 	return (NULL);
+	// }
+	// return ("OK");
+	(void)l_or_r;
+	return (res);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   launcher.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gsmets <gsmets@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/12 15:19:34 by gsmets            #+#    #+#             */
-/*   Updated: 2021/02/22 10:28:17 by gsmets           ###   ########.fr       */
+/*   Updated: 2021/05/31 20:19:55 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,26 @@ void	philo_eats(t_philosopher *philo)
 	t_rules *rules;
 
 	rules = philo->rules;
-	pthread_mutex_lock(&(rules->forks[philo->left_fork_id]));
+	if (pthread_mutex_lock(&(rules->forks[philo->left_fork_id])) != 0)
+		exit(1);
 	action_print(rules, philo->id, "has taken a fork");
-	pthread_mutex_lock(&(rules->forks[philo->right_fork_id]));
+	if (pthread_mutex_lock(&(rules->forks[philo->right_fork_id])) != 0)
+		exit(1);
 	action_print(rules, philo->id, "has taken a fork");
-	pthread_mutex_lock(&(rules->meal_check));
+	if (pthread_mutex_lock(&(rules->meal_check)) != 0)
+		exit(1);
 	action_print(rules, philo->id, "is eating");
 	philo->t_last_meal = timestamp();
-	pthread_mutex_unlock(&(rules->meal_check));
+	if (philo->t_last_meal == -1)
+		exit(1);
+	if (pthread_mutex_unlock(&(rules->meal_check)) != 0)
+		exit(1);
 	smart_sleep(rules->time_eat, rules);
 	(philo->x_ate)++;
-	pthread_mutex_unlock(&(rules->forks[philo->left_fork_id]));
-	pthread_mutex_unlock(&(rules->forks[philo->right_fork_id]));
+	if (pthread_mutex_unlock(&(rules->forks[philo->left_fork_id])) != 0)
+		exit(1);
+	if (pthread_mutex_unlock(&(rules->forks[philo->right_fork_id])) != 0)
+		exit(1);
 }
 
 void	*p_thread(void *void_philosopher)
@@ -41,7 +49,8 @@ void	*p_thread(void *void_philosopher)
 	philo = (t_philosopher *)void_philosopher;
 	rules = philo->rules;
 	if (philo->id % 2)
-		usleep(15000);
+		if (usleep(15000) == -1)
+			exit(1);
 	while (!(rules->dieded))
 	{
 		philo_eats(philo);
@@ -61,11 +70,14 @@ void	exit_launcher(t_rules *rules, t_philosopher *philos)
 
 	i = -1;
 	while (++i < rules->nb_philo)
-		pthread_join(philos[i].thread_id, NULL);
+		if (pthread_join(philos[i].thread_id, NULL) != 0)
+			exit(1);
 	i = -1;
 	while (++i < rules->nb_philo)
-		pthread_mutex_destroy(&(rules->forks[i]));
-	pthread_mutex_destroy(&(rules->writing));
+		if (pthread_mutex_destroy(&(rules->forks[i])) != 0)
+			exit(1);
+	if (pthread_mutex_destroy(&(rules->writing)) != 0)
+		exit(1);
 }
 
 void	death_checker(t_rules *r, t_philosopher *p)
@@ -104,11 +116,15 @@ int		launcher(t_rules *rules)
 	i = 0;
 	phi = rules->philosophers;
 	rules->first_timestamp = timestamp();
+	if (rules->first_timestamp == -1)
+		exit(1);
 	while (i < rules->nb_philo)
 	{
 		if (pthread_create(&(phi[i].thread_id), NULL, p_thread, &(phi[i])))
 			return (1);
 		phi[i].t_last_meal = timestamp();
+		if (phi[i].t_last_meal == -1)
+			exit(1);
 		i++;
 	}
 	death_checker(rules, rules->philosophers);

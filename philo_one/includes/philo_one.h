@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 20:06:10 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 18:35:28 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:26:22 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ time_to_die time_to_eat time_to_sleep \
 is out of range"
 
 struct s_philo_one;
+
+time_t	first;
 
 typedef struct s_philosopher
 {

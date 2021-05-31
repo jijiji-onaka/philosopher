@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:10:59 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 19:37:27 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 19:57:32 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,10 @@ void	*deep_thought(t_philosopher *philo)
 		return (NULL);
 	if (philo->info->status == DEATH)
 		return (NULL);
-	if (print_action(philo->number + 1,
-			THINK, philo->info->status) == EXIT_FAILURE)
-		return (NULL);
-	// print_action(philo->number + 1, THINK, philo->info->status);
+	// if (print_action(philo->number + 1,
+	//		THINK, philo->info->status) == EXIT_FAILURE)
+	//	return (NULL);
+	print_action(philo->number + 1, THINK, philo->info->status);
 	return ("OK");
 }
 

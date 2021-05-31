@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:01:46 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 19:37:10 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 19:56:38 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ bool	print_action(int number, int act, bool status)
 {
 	char	*act_message;
 
+	act_message = NULL;
 	if (status == DEATH)
 		return (EXIT_FAILURE);
 	else if (act == TAKE_FORK)

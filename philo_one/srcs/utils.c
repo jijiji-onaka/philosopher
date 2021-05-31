@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 20:42:41 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/24 19:38:31 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 18:22:10 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	is_valid_arg(t_philo_one *info)
 		return (error_exit(OOR_TIME_EAT));
 	if (info->time_to_sleep <= 0)
 		return (error_exit(OOR_TIME_SLEEP));
-	if (info->number_of_times_each_philosopher_must_eat <= 0)
+	if (info->number_of_times_each_philosopher_must_eat < -1)
 		return (error_exit(OOR_NUM_MUST_EAT));
 	return (true);
 }
@@ -79,20 +79,15 @@ bool	get_arg(t_philo_one *info, int argc, char **argv)
 	if (is_valid_arg(info) == false)
 		return (false);
 	info->status = ALIVE;
+	info->all_eat = false;
 	return (true);
 }
 
 time_t	get_cur_time(void)
 {
-// 	struct timeval	time_now;
-// 	// time_t			msecs_time;
+	struct timeval	tv;
 
-// 	gettimeofday(&time_now, NULL);
-// 	// msecs_time = (time_now.tv_sec * 1000) + (time_now.tv_usec / 1000);
-// return ((time_now.tv_usec / 1000) + (time_now.tv_sec * 1000));
-// 	// return (msecs_time);
-struct timeval	tv;
-
-	gettimeofday(&tv, NULL);
+	if (gettimeofday(&tv, NULL) == -1)
+		return (-1);
 	return ((tv.tv_usec / 1000) + (tv.tv_sec * 1000));
 }

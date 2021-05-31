@@ -6,17 +6,19 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:01:46 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/24 16:07:04 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 19:37:10 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
 
-void	print_action(int number, int act)
+bool	print_action(int number, int act, bool status)
 {
 	char	*act_message;
 
-	if (act == TAKE_FORK)
+	if (status == DEATH)
+		return (EXIT_FAILURE);
+	else if (act == TAKE_FORK)
 		act_message = "has taken a fork";
 	else if (act == EAT)
 		act_message = "is eating";
@@ -26,5 +28,8 @@ void	print_action(int number, int act)
 		act_message = "is thinking";
 	else if (act == DIED)
 		act_message = "died";
-	printf("%ld %d %s\n", get_cur_time(), number, act_message);
+	// printf("%ld %d %s\n", get_cur_time(), number, act_message);
+	if (printf("%ld %d %s\n", get_cur_time(), number, act_message) < 0)
+		return (error_exit(ERR_PRINTF));
+	return (EXIT_SUCCESS);
 }

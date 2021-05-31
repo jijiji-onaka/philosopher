@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 20:06:10 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/24 19:37:33 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 18:35:28 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,16 @@
 # define RESET "\033[0m"
 # define BOLD "\033[1m"
 # define RED "\033[31m"
-# define DEATH 0
-# define ALIVE 1
+# define ALIVE 0
+# define DEATH 1
+# define LEFT 0
+# define RIGHT 1
 # define ERR_MALLOC "malloc error"
+# define ERR_PRINTF "printf error"
+# define ERR_USLEEP "usleep error"
+# define ERR_GETTIMEOFDAY "gettimeofday error"
 # define ERR_PTHREAD_CREATE "pthread_create error"
+# define ERR_PTHREAD_JOIN "pthread_join error"
 # define ERR_MUTEX_INIT "pthread_mutex_init error"
 # define ERR_MUTEX_LOCK "pthread_mutex_lock error"
 # define ERR_MUTEX_UNLOCK "pthread_mutex_unlock error"
@@ -52,7 +58,6 @@ typedef struct s_philosopher
 	int64_t				left_fork;
 	int64_t				right_fork;
 	int64_t				eat_count;
-	bool				status;
 	struct s_philo_one	*info;
 }	t_philosopher;
 
@@ -66,7 +71,8 @@ typedef struct s_philo_one
 	t_philosopher		*philosophers;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		artist;
-	pthread_mutex_t		status_mutex;
+	pthread_mutex_t		eat_mutex;
+	bool				all_eat;
 	bool				status;
 }	t_philo_one;
 
@@ -108,13 +114,17 @@ bool	create_thread(t_philo_one *info);
 /*
 ** PRINT_C
 */
-void	print_action(int number, int act);
+bool	print_action(int number, int act, bool status);
 /*
 ** ACTION_C
 */
 void	*sleep_after_eating(t_philosopher *philosopher);
 void	*eat_spaghetti(t_philosopher *philosopher);
-void	*take_fork(t_philosopher *philosopher);
+void	*take_fork(t_philosopher *philosopher, int l_or_r);
 void	*deep_thought(t_philosopher *philosopher);
+/*
+** EAT_HELP
+*/
+void	*eat_spaghetti_2(t_philosopher *philosopher);
 
 #endif

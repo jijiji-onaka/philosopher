@@ -6,11 +6,35 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:10:59 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 20:40:34 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 21:32:15 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_one.h"
+
+long long	time_diff(long long past, long long pres)
+{
+	if (pres == -1 || past == -1)
+		exit(1);
+	return (pres - past);
+}
+
+
+void		smart_sleep(long long time, t_philo_one *info)
+{
+	long long i;
+
+	i = get_cur_time();
+	if (i == -1)
+		exit(1);
+	(void)info;
+	while (info->status == ALIVE)
+	{
+		if (time_diff(i, get_cur_time()) >= time)
+			break ;
+		usleep(10);
+	}
+}
 
 void	*eat_spaghetti(t_philosopher *philo)
 {
@@ -55,7 +79,8 @@ void	*eat_spaghetti(t_philosopher *philo)
 	philo->last_eat_time = get_cur_time();
 	pthread_mutex_unlock(&(philo->info->eat_mutex));
 	philo->eat_count++;
-	usleep(philo->info->time_to_eat);
+	smart_sleep(philo->info->time_to_eat, philo->info);
+	// usleep(philo->info->time_to_eat * 1000);
 	pthread_mutex_unlock(&philo->info->forks[philo->left_fork]);
 	pthread_mutex_unlock(&philo->info->forks[philo->right_fork]);
 	return ("OK");
@@ -90,8 +115,7 @@ void	*sleep_after_eating(t_philosopher *philo)
 		return (NULL);
 	if (philo->info->status == DEATH)
 		return (NULL);
-	if (usleep(philo->info->time_to_sleep) == -1)
-		return (wrap(error_exit(ERR_USLEEP)));
+	smart_sleep(philo->info->time_to_sleep, philo->info);
 	// if (print_action(philo->number + 1, SLEEP,
 	// 		philo->info->status) == false)
 	// 	return (NULL);

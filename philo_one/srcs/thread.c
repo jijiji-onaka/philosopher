@@ -6,7 +6,7 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 02:11:09 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/05/31 20:26:51 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/05/31 20:52:28 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ void	*philosopher_act(void *philo_info)
 	{
 		// if (deep_thought(philosopher) == NULL)
 		// 	return (NULL);
-		if (usleep(200) == -1)
+		if (usleep(15000) == -1)
 			return (wrap(error_exit(ERR_USLEEP)));
 	}
 	while (info->status == ALIVE)
 	{
-		if (eat_spaghetti(philosopher) == NULL || info->all_eat == true)
+		if (info->all_eat == true || eat_spaghetti(philosopher) == NULL)
 			return (NULL);
-		if (sleep_after_eating(philosopher) == NULL || info->all_eat == true)
+		if (info->all_eat == true || sleep_after_eating(philosopher) == NULL)
 			return (NULL);
-		if (deep_thought(philosopher) == NULL || info->all_eat == true)
+		if (info->all_eat == true || deep_thought(philosopher) == NULL)
 			return (NULL);
 	}
 	return ("OK");

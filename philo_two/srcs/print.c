@@ -6,11 +6,11 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/24 16:01:46 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/06/06 18:50:20 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/06/06 22:44:02 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo_one.h"
+#include "../includes/philo_two.h"
 
 int	print_action(int number, int act, bool status, time_t begin_time)
 {

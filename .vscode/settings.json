@@ -3,6 +3,7 @@
         "*.h": "c",
         "atomic": "c",
         "cstdint": "c",
-        "memory": "c"
+        "memory": "c",
+        "type_traits": "c"
     }
 }

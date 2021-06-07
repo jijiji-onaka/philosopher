@@ -6,18 +6,18 @@
 #    By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/22 20:47:24 by tjinichi          #+#    #+#              #
-#    Updated: 2021/06/07 21:05:58 by tjinichi         ###   ########.fr        #
+#    Updated: 2021/06/07 21:05:41 by tjinichi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo_one
+NAME = philo_two
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I includes #   -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -I includes   -g #-fsanitize=address
 
 SRCS =	./srcs/exit.c \
-		./srcs/philo_one.c \
+		./srcs/philo_two.c \
 		./srcs/utils.c \
 		./srcs/initialize.c \
 		./srcs/thread.c \

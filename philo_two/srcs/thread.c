@@ -6,16 +6,16 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/23 02:11:09 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/06/06 22:41:59 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/06/07 01:25:25 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo_one.h"
+#include "../includes/philo_two.h"
 
 void	*philosopher_act(void *philo_info)
 {
 	t_philosopher	*philosopher;
-	t_philo_one		*info;
+	t_philo_two		*info;
 
 	philosopher = (t_philosopher *)philo_info;
 	info = philosopher->info;
@@ -41,7 +41,7 @@ void	*philosopher_act(void *philo_info)
 	return ("OK");
 }
 
-static int	death_from_starvation(t_philo_one *info, t_philosopher *philosopher)
+static int	death_from_starvation(t_philo_two *info, t_philosopher *philosopher)
 {
 	int64_t	i;
 	time_t	cur_time;
@@ -49,26 +49,26 @@ static int	death_from_starvation(t_philo_one *info, t_philosopher *philosopher)
 	i = -1;
 	while (++i < info->number_of_philosophers && info->status == ALIVE)
 	{
-		if (pthread_mutex_lock(&(info->mutex)) != 0)
-			return (error_exit(ERR_MUTEX_LOCK));
+		if (sem_wait(info->semaphore) == -1)
+			return (error_exit(ERR_SEM_WAIT));
 		cur_time = get_cur_time();
 		if (cur_time == -1)
 		{
-			if (pthread_mutex_unlock(&(info->mutex)) != 0)
-				return (error_exit(ERR_MUTEX_LOCK));
+			if (sem_post(info->semaphore) == -1)
+				return (error_exit(ERR_SEM_POST));
 			return (error_exit(ERR_GETTIMEOFDAY));
 		}
 		if (die_check(&(philosopher[i]), cur_time) == NULL)
 			return (EXIT_FAILURE);
-		if (pthread_mutex_unlock(&(info->mutex)) != 0)
-			return (error_exit(ERR_MUTEX_LOCK));
+		if (sem_post(info->semaphore) == -1)
+			return (error_exit(ERR_SEM_POST));
 		if (info->status == DEATH)
 			return (-1);
 	}
 	return (EXIT_SUCCESS);
 }
 
-int	death_monitor(t_philo_one *info, t_philosopher *philosopher)
+int	death_monitor(t_philo_two *info, t_philosopher *philosopher)
 {
 	int64_t	i;
 	int64_t	finish_eat_philo_num;
@@ -92,7 +92,7 @@ int	death_monitor(t_philo_one *info, t_philosopher *philosopher)
 	return (EXIT_SUCCESS);
 }
 
-bool	create_thread(t_philo_one *info)
+bool	create_thread(t_philo_two *info)
 {
 	int64_t		i;
 	pthread_t	*tid;

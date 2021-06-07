@@ -6,11 +6,11 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 20:42:41 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/06/06 18:46:39 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/06/06 22:44:31 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo_one.h"
+#include "../includes/philo_two.h"
 
 size_t	ft_strlen(char *str)
 {
@@ -45,7 +45,7 @@ int64_t	ft_atoi(char *str)
 	return (res * sign);
 }
 
-bool	is_valid_arg(t_philo_one *info)
+bool	is_valid_arg(t_philo_two *info)
 {
 	if (info->number_of_philosophers <= 1)
 		return (error_exit(OOR_NUM_PHI));
@@ -60,7 +60,7 @@ bool	is_valid_arg(t_philo_one *info)
 	return (EXIT_SUCCESS);
 }
 
-bool	get_arg(t_philo_one *info, int argc, char **argv)
+bool	get_arg(t_philo_two *info, int argc, char **argv)
 {
 	info->number_of_philosophers = ft_atoi(argv[1]);
 	info->time_to_die = ft_atoi(argv[2]);

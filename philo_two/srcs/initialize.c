@@ -6,13 +6,13 @@
 /*   By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/22 22:52:22 by tjinichi          #+#    #+#             */
-/*   Updated: 2021/06/06 23:08:37 by tjinichi         ###   ########.fr       */
+/*   Updated: 2021/06/07 02:25:41 by tjinichi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philo_one.h"
+#include "../includes/philo_two.h"
 
-bool	initialize_philosophers(t_philo_one *info)
+bool	initialize_philosophers(t_philo_two *info)
 {
 	int64_t			i;
 	t_philosopher	*philosophers;
@@ -24,8 +24,6 @@ bool	initialize_philosophers(t_philo_one *info)
 	while (++i < info->number_of_philosophers)
 	{
 		philosophers[i].number = i;
-		philosophers[i].left_fork = i;
-		philosophers[i].right_fork = (i + 1) % info->number_of_philosophers;
 		philosophers[i].last_eat_time = get_cur_time();
 		if (philosophers[i].last_eat_time == -1)
 			return (error_exit(ERR_GETTIMEOFDAY));
@@ -36,21 +34,25 @@ bool	initialize_philosophers(t_philo_one *info)
 	return (true);
 }
 
-bool	initialize_mutex_fork(t_philo_one *info)
+bool	initialize_semaphore(t_philo_two *info)
 {
-	int64_t	i;
-
-	info->forks = malloc(sizeof(pthread_mutex_t)
-			* info->number_of_philosophers);
-	if (info->forks == NULL)
-		return (error_exit(ERR_MALLOC));
-	i = -1;
-	while (++i < info->number_of_philosophers)
-		if (pthread_mutex_init(&(info->forks[i]), NULL) != 0)
-			return (error_exit(ERR_MUTEX_INIT));
-	if (pthread_mutex_init(&(info->artist), NULL) != 0)
-		return (error_exit(ERR_MUTEX_INIT));
-	if (pthread_mutex_init(&(info->mutex), NULL) != 0)
-		return (error_exit(ERR_MUTEX_INIT));
+	info->forks = sem_open(MY_FORK_NAME, O_CREAT | O_EXCL, S_IRWXU,
+			info->number_of_philosophers);
+	if (info->forks == SEM_FAILED)
+	{
+		sem_unlink(MY_FORK_NAME);
+		info->forks = sem_open(MY_FORK_NAME, O_CREAT | O_EXCL, S_IRWXU,
+				info->number_of_philosophers);
+		if (info->forks == SEM_FAILED)
+			return (error_exit(ERR_SEM_OPEN));
+	}
+	info->semaphore = sem_open(MY_SEMA_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
+	if (info->semaphore == SEM_FAILED)
+	{
+		sem_unlink(MY_SEMA_NAME);
+		info->semaphore = sem_open(MY_SEMA_NAME, O_CREAT | O_EXCL, S_IRWXU, 1);
+		if (info->semaphore == SEM_FAILED)
+			return (error_exit(ERR_SEM_OPEN));
+	}
 	return (true);
 }

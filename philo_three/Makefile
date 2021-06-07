@@ -6,18 +6,18 @@
 #    By: tjinichi <tjinichi@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/22 20:47:24 by tjinichi          #+#    #+#              #
-#    Updated: 2021/06/07 21:05:58 by tjinichi         ###   ########.fr        #
+#    Updated: 2021/06/07 22:02:46 by tjinichi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo_one
+NAME = philo_three
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -I includes #   -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -I includes -g #-fsanitize=address
 
 SRCS =	./srcs/exit.c \
-		./srcs/philo_one.c \
+		./srcs/philo_three.c \
 		./srcs/utils.c \
 		./srcs/initialize.c \
 		./srcs/thread.c \
@@ -25,6 +25,9 @@ SRCS =	./srcs/exit.c \
 		./srcs/action.c \
 		./srcs/eat_help.c \
 		./srcs/my_usleep.c \
+		./srcs/my_sem_open.c \
+		./srcs/kill_process.c \
+		./srcs/wait_process.c \
 
 OBJS = ${SRCS:.c=.o}
 
